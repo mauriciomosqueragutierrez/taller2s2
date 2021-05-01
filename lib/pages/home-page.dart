@@ -75,6 +75,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
                 onPressed: () {
                   setState(() {
+                    operaciones =
+                        operaciones.split("Expresión malformada").first;
                     operaciones = operaciones.isNotEmpty
                         ? operaciones.substring(0, operaciones.length - 1)
                         : "";
@@ -190,7 +192,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Text("C")),
             ElevatedButton(
                 onPressed: () {
-                  getOperacion();
+                  getOperacion(operaciones);
                 },
                 child: Text("=")),
             ElevatedButton(
@@ -206,25 +208,27 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  getOperacion() {
+  getOperacion(String operacion) {
     try {
       num resultado;
 
-      if (!operaciones.contains(" ")) {
-        if (operaciones.contains(new RegExp(r'²|√|%'))) {
-          resultado = validarOperacionesEspeciales(operaciones);
+      if (!operacion.contains(" ")) {
+        if (operacion.contains(new RegExp(r'²|√|%'))) {
+          resultado = validarOperacionesEspeciales(operacion);
           setState(() {
-            operaciones = "$resultado";
+            operacion = "$resultado";
+            operaciones = operacion;
           });
         }
         setState(() {
-          resultadoOperaciones = operaciones;
+          operaciones = operacion;
+          resultadoOperaciones = operacion;
         });
       } else {
-        var array = operaciones.split(" ");
+        var array = operacion.split(" ");
         String operador = array[1].trim();
-        double x = validarOperacionesEspeciales(array[0].trim());
-        double y = validarOperacionesEspeciales(array[2].trim());
+        num x = validarOperacionesEspeciales(array[0].trim());
+        num y = validarOperacionesEspeciales(array[2].trim());
 
         resultado = (operador == "+")
             ? (x + y)
@@ -243,6 +247,13 @@ class _MyHomePageState extends State<MyHomePage> {
               "$resultadoOperaciones\n $x $operador $y = $resultado";
           operaciones = "$resultado";
         });
+
+        if (array.length > 3) {
+          array = array.sublist(3);
+          array.insert(0, resultado.toString());
+          operacion = array.join(" ");
+          getOperacion(operacion);
+        }
       }
     } catch (e) {
       setState(() {
@@ -253,22 +264,22 @@ class _MyHomePageState extends State<MyHomePage> {
 
   num validarOperacionesEspeciales(String numeroCuadratico) {
     num resultado;
-    if (numeroCuadratico.contains("²")) {
-      var numero = double.parse(numeroCuadratico.split("²")[0]);
+    if ("²".allMatches(numeroCuadratico).length == 1) {
+      var numero = double.parse(numeroCuadratico.split("²").first);
       resultado = numero * numero;
       resultado = resultado % 1 == 0 ? resultado.round() : resultado;
       return resultado;
     }
 
-    if (numeroCuadratico.contains("√")) {
-      var numero = double.parse(numeroCuadratico.split("√")[0]);
+    if ("√".allMatches(numeroCuadratico).length == 1) {
+      var numero = double.parse(numeroCuadratico.split("√").first);
       resultado = sqrt(numero);
       resultado = resultado % 1 == 0 ? resultado.round() : resultado;
       return resultado;
     }
 
-    if (numeroCuadratico.contains("%")) {
-      var numero = double.parse(numeroCuadratico.split("%")[0]);
+    if ("%".allMatches(numeroCuadratico).length == 1) {
+      var numero = double.parse(numeroCuadratico.split("%").first);
       resultado = numero / 100;
       resultado = resultado % 1 == 0 ? resultado.round() : resultado;
       return resultado;
