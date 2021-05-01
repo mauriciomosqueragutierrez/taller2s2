@@ -149,7 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                     onPressed: () {
                       setState(() {
-                        operaciones += " = ";
+                        obtenerResultado();
                       });
                     },
                     child: Text("=")),
@@ -164,5 +164,23 @@ class _MyHomePageState extends State<MyHomePage> {
             ])),
       ],
     );
+  }
+
+  obtenerResultado() {
+    var array = operaciones.split(" ");
+
+    if (array[1] == "+") {
+      operaciones =
+          (double.parse(array[0]) + double.parse(array[2])).toString();
+    } else if (array[1] == "-") {
+      operaciones =
+          (double.parse(array[0]) - double.parse(array[2])).toString();
+    } else if (array[1] == "x") {
+      operaciones =
+          (double.parse(array[0]) * double.parse(array[2])).toString();
+    } else if (array[1] == "/") {
+      operaciones =
+          (double.parse(array[0]) / double.parse(array[2])).toString();
+    }
   }
 }
