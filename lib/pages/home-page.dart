@@ -1,17 +1,16 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:taller2s2/pages/resultados.dart';
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class HomePrincipal extends StatefulWidget {
+  HomePrincipal({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomePrincipalState createState() => _HomePrincipalState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomePrincipalState extends State<HomePrincipal> {
   String operaciones = "";
   String resultadoOperaciones = "";
   List<Text> listaResultados = [];
@@ -31,7 +30,7 @@ class _MyHomePageState extends State<MyHomePage> {
       children: [
         Expanded(
           child: Container(
-              color: Colors.red,
+              color: Colors.green[100],
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -47,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
               )),
         ),
         Container(
-          color: Colors.blue,
+          color: Colors.greenAccent,
           height: 100,
           child: Row(
             children: [
@@ -64,32 +63,32 @@ class _MyHomePageState extends State<MyHomePage> {
                     operaciones += "√";
                   });
                 },
-                child: Text("√")),
+                child: Text("√", style: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold, fontSize: 20))),
             ElevatedButton(
                 onPressed: () {
                   setState(() {
                     operaciones += "²";
                   });
                 },
-                child: Text("x²")),
+                child: Text("x²", style: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold, fontSize: 20))),
             ElevatedButton(
                 onPressed: () {
                   setState(() {
                     operaciones += "%";
                   });
                 },
-                child: Text("%")),
+                child: Text("%", style: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold, fontSize: 20))),
             ElevatedButton(
                 onPressed: () {
                   setState(() {
                     operaciones =
-                        operaciones.split("Expresión malformada").first;
+                        operaciones.split("Expresión malformada. Arreglar.").first;
                     operaciones = operaciones.isNotEmpty
                         ? operaciones.substring(0, operaciones.length - 1)
                         : "";
                   });
                 },
-                child: Text("<"))
+                child: Text("<", style: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold, fontSize: 20)))
           ]),
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
             ElevatedButton(
@@ -119,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     operaciones += " / ";
                   });
                 },
-                child: Text("/"))
+                child: Text("/", style: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold, fontSize: 20)))
           ]),
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
             ElevatedButton(
@@ -149,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     operaciones += " x ";
                   });
                 },
-                child: Text("x"))
+                child: Text("x", style: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold, fontSize: 20)))
           ]),
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
             ElevatedButton(
@@ -179,7 +178,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     operaciones += " - ";
                   });
                 },
-                child: Text("-"))
+                child: Text("-", style: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold, fontSize: 20)))
           ]),
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
             ElevatedButton(
@@ -197,19 +196,19 @@ class _MyHomePageState extends State<MyHomePage> {
                     listaResultados = [];
                   });
                 },
-                child: Text("C")),
+                child: Text("C", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20))),
             ElevatedButton(
                 onPressed: () {
                   getOperacion(operaciones);
                 },
-                child: Text("=")),
+                child: Text("=", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20))),
             ElevatedButton(
                 onPressed: () {
                   setState(() {
                     operaciones += " + ";
                   });
                 },
-                child: Text("+"))
+                child: Text("+", style: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold, fontSize: 20)))
           ]),
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
             ElevatedButton(
@@ -220,7 +219,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           builder: (context) => ResultadosPage(
                               listadoResultados: listaResultados)));
                 },
-                child: Text("Mostrar resultados de operaciones")),
+                style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.green[900])),
+                child: Text("Mostrar Resultados", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20))),
           ])
         ])),
       ],
@@ -280,7 +280,7 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     } catch (e) {
       setState(() {
-        operaciones += "\nExpresión malformada";
+        operaciones += "\nExpresión malformada. Debe volver a escribir";
       });
     }
   }
